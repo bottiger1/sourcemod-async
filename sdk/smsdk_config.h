@@ -40,7 +40,7 @@
 /* Basic information exposed publicly */
 #define SMEXT_CONF_NAME			"Async"
 #define SMEXT_CONF_DESCRIPTION	"Asyncronous Network Commands"
-#define SMEXT_CONF_VERSION		"2.0"
+#define SMEXT_CONF_VERSION		"2.1"
 #define SMEXT_CONF_AUTHOR		"Bottiger"
 #define SMEXT_CONF_URL			"www.skial.com"
 #define SMEXT_CONF_LOGTAG		"ASYNC"

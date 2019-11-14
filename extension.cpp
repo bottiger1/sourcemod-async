@@ -58,7 +58,7 @@ void OnGameFrame(bool simulating) {
     if(!g_curl_done_queue.Empty()) {
         g_curl_done_queue.Lock();
         while(!g_curl_done_queue.Empty()) {
-            g_curl_done_queue.Pop()->OnCurlCompleted();
+            g_curl_done_queue.Pop()->OnCurlCompletedGameThread();
         }
         g_curl_done_queue.Unlock();
     }
@@ -76,6 +76,7 @@ void CheckCompletedCurlJobs() {
                 curl_multi_remove_handle(g_curl, message->easy_handle);
                 curl_easy_getinfo(message->easy_handle, CURLINFO_PRIVATE, (char*)&curl_context);
                 curl_context->curlcode = message->data.result;
+                curl_context->OnCurlCompleted();
                 g_curl_done_queue.Lock();
                 g_curl_done_queue.Push(curl_context);
                 g_curl_done_queue.Unlock();

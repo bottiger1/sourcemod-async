@@ -33,6 +33,7 @@ public:
     void AddHeader(const char* string);
     void OnCurlStarted();
     void OnCurlCompleted();
+    void OnCurlCompletedGameThread();
 };
 
 class CurlSocketContext {
