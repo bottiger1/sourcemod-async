@@ -1,9 +1,15 @@
+These are some rough notes on what I needed to do to compile the extension on Ubuntu 18.04 x64.
+
+There is a copy of libuv in the project directory because when I wrote this extension, libuv was difficult to compile and did not install in the right place to get automatically detected by g++. This may have changed now so maybe we will remove it in the future.
+
 Compiling libuv
 Download from https://github.com/libuv/libuv
 python gyp_uv.py -Dtarget_arch=ia32 -f make
 cd out
 sudo apt install -y g++ g++-multilib
 make BUILDTYPE=Release
+
+copy the include and .a file to the libs folder
 
 Compiling curl
 Add line to /etc/apt/source.list if missing
