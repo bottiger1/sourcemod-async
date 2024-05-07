@@ -1,0 +1,4 @@
+#!/bin/bash
+rm -rf package *.ext .ambuild2
+cd ..
+rm -rf hl2sdk-manifests

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+ln -s ../sdk/hl2sdk-manifests ../
+
+python3 ../configure.py -s tf2 \
+	--hl2sdk-root `realpath ../../sdk` \
+	--mms-path ../../sdk/mmsource \
+	--sm-path ../../sdk/sourcemod \
+	--targets x86_64
+ambuild

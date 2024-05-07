@@ -1,32 +1,13 @@
-# Prerequisites
-*.d
+# vim swap files
+*.swp
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# build folder
+build/*
 
-# Precompiled Headers
-*.gch
-*.pch
+# hl2sdk-manifest link
+hl2sdk-manifests
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# include build commands
+!build/build
+!build/clean
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-#*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app

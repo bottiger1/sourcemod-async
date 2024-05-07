@@ -15,9 +15,7 @@ CurlContext::CurlContext(CURL* c, IPluginContext* plugin) {
 CurlContext::~CurlContext() {
     curl_easy_cleanup(curl);
     if(headers != NULL)
-        curl_slist_free_all(headers);
-    if(post)
-        free(post);    
+        curl_slist_free_all(headers);   
 }
 
 void CurlContext::AddHeader(const char* string) {
@@ -26,27 +24,24 @@ void CurlContext::AddHeader(const char* string) {
         headers = new_headers;
 }
 
-// called right before the main thread adds job to the queue
+// called right before event thread adds job to the queue
 void CurlContext::OnCurlStarted() {
     in_event_thread = true;
     // compress post if available
-    if(post)
-    {
+    if(post) {
         char* compressBuffer = (char*)malloc(compressBound(postLength));
-        // TODO check malloc?
-        uLongf compressLength;
-        int result = compress2((Bytef*)compressBuffer, &compressLength, (Bytef*)post, postLength, Z_BEST_SPEED);
-        if(result == Z_OK)
-        {
-            free(post);
-            post = compressBuffer;
-            postLength = compressLength;
-            AddHeader("Content-Encoding: gzip");
-        }
-        else
-        {
-            // compression failed
-            free(compressBuffer);
+        if(compressBuffer != NULL) {
+            uLongf compressLength;
+            int result = compress2((Bytef*)compressBuffer, &compressLength, (Bytef*)post, postLength, Z_BEST_SPEED);
+            if(result == Z_OK) {
+                free(post);
+                post = compressBuffer;
+                postLength = compressLength;
+                AddHeader("Content-Encoding: gzip");
+            } else {
+                // compression failed
+                free(compressBuffer);
+            }
         }
 
         curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, postLength);
@@ -54,9 +49,10 @@ void CurlContext::OnCurlStarted() {
     }
 }
 
-// called when the main thread loops through finished jobs
-void CurlContext::OnCurlCompleted() {
+// called when the game thread loops through finished jobs
+void CurlContext::OnCurlCompletedGameThread() {
     in_event_thread = false;
+
     IPluginFunction* func = GetSourcepawnFunction(sourcepawn_plugin_context, sourcepawn_callback);
     // the plugin that called us disappeared, delete ourselves
     if(func == NULL) {
@@ -85,7 +81,15 @@ void CurlContext::OnCurlCompleted() {
     func->PushCell(sourcepawn_userdata);
     func->Execute(NULL);
     
-    //printf("Finished Code %i size %i\n%.*s\n", curlcode, buffer.size(), 256, &buffer[0]);
+    //printf("Finished Code %i size %i\n%.*s\n", curlcode, buffer.size(), 256, &buffer[0]);    
+}
+
+// called when event thread finishes a curl job
+void CurlContext::OnCurlCompleted() {
+    if(post) {
+        free(post);
+        post = NULL;
+    }
 }
 
 ////////////////
