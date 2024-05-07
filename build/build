@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ln -s ../sdk/hl2sdk-manifests ../
+ln -s ../sdk/sourcemod/hl2sdk-manifests ../
 
 python3 ../configure.py -s tf2 \
 	--hl2sdk-root `realpath ../../sdk` \
