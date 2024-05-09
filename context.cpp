@@ -10,6 +10,7 @@ CurlContext::CurlContext(CURL* c, IPluginContext* plugin) {
     handle_closed = false;
     headers = NULL;
     post = NULL;
+    curl_error_message[0] = 0;
 }
 
 CurlContext::~CurlContext() {

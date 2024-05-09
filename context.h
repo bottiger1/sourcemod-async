@@ -27,6 +27,7 @@ public:
     int sourcepawn_userdata;
     bool in_event_thread;
     bool handle_closed; // if someone try to close the handle when it was processing, close it when it times out or completes
+    char curl_error_message[CURL_ERROR_SIZE];
 
     CurlContext(CURL* c, IPluginContext* plugin);
     ~CurlContext();

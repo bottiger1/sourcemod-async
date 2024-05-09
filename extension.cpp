@@ -212,6 +212,7 @@ void ProcessCurlJob(CurlContext* c) {
     curl_easy_setopt(c->curl, CURLOPT_HEADERDATA, (void*)c);    
     curl_easy_setopt(c->curl, CURLOPT_PRIVATE, (void*)c);
     curl_easy_setopt(c->curl, CURLOPT_NOSIGNAL, 1L);
+    curl_easy_setopt(c->curl, CURLOPT_ERRORBUFFER, c->curl_error_message);
     if(c->headers != NULL)
         curl_easy_setopt(c->curl, CURLOPT_HTTPHEADER, c->headers);
     curl_multi_add_handle(g_curl, c->curl);

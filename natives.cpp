@@ -190,6 +190,13 @@ cell_t CurlErrorString(IPluginContext *pContext, const cell_t *params) {
     return 0;
 }
 
+cell_t CurlGetErrorMessage(IPluginContext *pContext, const cell_t *params) {
+    GET_CURL_CONTEXT_MACRO
+
+    pContext->StringToLocal(params[2], params[3], context->curl_error_message);
+    return 0;
+}
+
 cell_t CurlVersion(IPluginContext *pContext, const cell_t *params) {
     char* version = curl_version();
     pContext->StringToLocal(params[1], params[2], version);
@@ -255,5 +262,6 @@ sp_nativeinfo_t MyNatives[] = {
     {"Async_CurlVersion",                   CurlVersion},
     {"Async_CurlGetResponseHeaderSize",     CurlGetResponseHeaderSize},
     {"Async_CurlGetResponseHeader",         CurlGetResponseHeader},
+    {"Async_CurlGetErrorMessage",           CurlGetErrorMessage},
     {NULL,                      NULL},
 };
